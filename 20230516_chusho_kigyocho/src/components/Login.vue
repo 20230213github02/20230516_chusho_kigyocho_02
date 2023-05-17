@@ -46,10 +46,27 @@ export default {
             password: '',
             usertype: '',
 
+            flagAllPass: ''
+
         }
     },
     methods: {
         login() {
+
+            this.flagAllPass = 
+            (!this.ErrorFlagUsernameTooLong)&&
+            (!this.ErrorFlagUsernameFormatWrong)&&
+            (!this.ErrorFlagUsernameNull)&&
+            (!this.ErrorFlagPasswordTooShort)&&
+            (!this.ErrorFlagPasswordTooLong)&&
+            (!this.ErrorFlagPasswordFormatWrong)&&
+            (!this.ErrorFlagPasswordNull)&&
+            (!this.ErrorFlagUsertypeNotSelect);
+
+            if(!this.flagAllPass){
+                alert("有误")
+                return;
+            }
 
             if (this.usertype == "manager") {
                 this.loginManager();
