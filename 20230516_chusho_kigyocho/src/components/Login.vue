@@ -1,29 +1,25 @@
 <template>
     <div>
         <div>
-
-        <label>用户名</label><input type="text" v-model="username"/>
-        <div v-if="ErrorFlagUsernameTooLong">过长</div>
-        <div v-if="ErrorFlagUsernameFormatWrong">格式错误</div>
-        <div v-if="ErrorFlagUsernameNull">为空</div>
+            <label>用户名</label><input type="text" v-model="username" />
+            <div v-if="ErrorFlagUsernameTooLong">过长</div>
+            <div v-if="ErrorFlagUsernameFormatWrong">格式错误</div>
+            <div v-if="ErrorFlagUsernameNull">为空</div>
         </div>
         <div>
-
-        <label>密码</label><input type="password" v-model="password"/>
-        <div v-if="ErrorFlagPasswordTooShort">太短</div>
-        <div v-if="ErrorFlagPasswordTooLong">过长</div>
-        <div v-if="ErrorFlagPasswordFormatWrong">格式错误</div>
-        <div v-if="ErrorFlagPasswordNull">为空</div>
+            <label>密码</label><input type="password" v-model="password" />
+            <div v-if="ErrorFlagPasswordTooShort">太短</div>
+            <div v-if="ErrorFlagPasswordTooLong">过长</div>
+            <div v-if="ErrorFlagPasswordFormatWrong">格式错误</div>
+            <div v-if="ErrorFlagPasswordNull">为空</div>
         </div>
         <div>
-
-        <input type="radio" name="usertype" value="manager" v-model="usertype" />管理员
-        <input type="radio" name="usertype" value="normaluser" v-model="usertype" />普通用户
-        <div v-if="ErrorFlagUsertypeNotSelect">没有选择</div>
+            <input type="radio" name="usertype" value="manager" v-model="usertype" />管理员
+            <input type="radio" name="usertype" value="normaluser" v-model="usertype" />普通用户
+            <div v-if="ErrorFlagUsertypeNotSelect">没有选择</div>
         </div>
         <div>
-
-        <input type="button" value="提交" @click="login" />
+            <input type="button" value="提交" @click="login" />
         </div>
     </div>
 </template>
@@ -33,10 +29,9 @@ import axios from 'axios';
 export default {
     data() {
         return {
-
             ErrorFlagUsernameTooLong: '',
-            ErrorFlagUsernameFormatWrong : '',
-            ErrorFlagUsernameNull : '',
+            ErrorFlagUsernameFormatWrong: '',
+            ErrorFlagUsernameNull: '',
             ErrorFlagPasswordTooShort: '',
             ErrorFlagPasswordTooLong: '',
             ErrorFlagPasswordFormatWrong: '',
@@ -51,31 +46,29 @@ export default {
             // ErrorMessageFlagPasswordFormatWrong: '',
             // ErrorMessageFlagPasswordNull: '', 
 
-            regExpUsername : /^[ぁ-んァ-ン一-龯0-9a-zA-Z]+$/,
-            regExpPassword : /^[0-9a-zA-Z]+$/,
+            regExpUsername: /^[ぁ-んァ-ン一-龯0-9a-zA-Z]+$/,
+            regExpPassword: /^[0-9a-zA-Z]+$/,
 
             username: '',
             password: '',
             usertype: '',
 
             flagAllPass: ''
-
         }
     },
     methods: {
         login() {
+            this.flagAllPass =
+                (!this.ErrorFlagUsernameTooLong) &&
+                (!this.ErrorFlagUsernameFormatWrong) &&
+                (!this.ErrorFlagUsernameNull) &&
+                (!this.ErrorFlagPasswordTooShort) &&
+                (!this.ErrorFlagPasswordTooLong) &&
+                (!this.ErrorFlagPasswordFormatWrong) &&
+                (!this.ErrorFlagPasswordNull) &&
+                (!this.ErrorFlagUsertypeNotSelect);
 
-            this.flagAllPass = 
-            (!this.ErrorFlagUsernameTooLong)&&
-            (!this.ErrorFlagUsernameFormatWrong)&&
-            (!this.ErrorFlagUsernameNull)&&
-            (!this.ErrorFlagPasswordTooShort)&&
-            (!this.ErrorFlagPasswordTooLong)&&
-            (!this.ErrorFlagPasswordFormatWrong)&&
-            (!this.ErrorFlagPasswordNull)&&
-            (!this.ErrorFlagUsertypeNotSelect);
-
-            if(!this.flagAllPass){
+            if (!this.flagAllPass) {
                 alert("有误")
                 return;
             }
@@ -97,9 +90,9 @@ export default {
             axios.post('http://localhost:8815/Manager/login', manager).then(response => {
                 if (response.data) {
                     console.log(response.data)
-                    if(response.data.state == '200'){
+                    if (response.data.state == '200') {
                         this.$router.push('/content-for-manager');
-                    } else if (response.data.state == '600'){
+                    } else if (response.data.state == '600') {
                         alert('没有找到数据');
                     }
                 }
@@ -120,9 +113,9 @@ export default {
             axios.post('http://localhost:8815/Normaluser/login', normaluser).then(response => {
                 if (response.data) {
                     console.log(response.data)
-                    if(response.data.state == '200'){
+                    if (response.data.state == '200') {
                         this.$router.push('/content-for-normaluser');
-                    } else if (response.data.state == '600'){
+                    } else if (response.data.state == '600') {
                         alert('没有找到数据');
                     }
                 }
@@ -133,43 +126,43 @@ export default {
                 }
             })
         },
-        CheckUsernameWhetherTooLong(){
-            this.ErrorFlagUsernameTooLong = this.username.length>10;
+        CheckUsernameWhetherTooLong() {
+            this.ErrorFlagUsernameTooLong = this.username.length > 10;
 
             // fortest
             console.log("test")
         },
-        CheckUsernameFormat(){
+        CheckUsernameFormat() {
             this.ErrorFlagUsernameFormatWrong = !this.regExpUsername.test(this.username);
         },
-        CheckUsernameNull(){
-            this.ErrorFlagUsernameNull = this.username== '';
+        CheckUsernameNull() {
+            this.ErrorFlagUsernameNull = this.username == '';
         },
-        CheckPasswordWhetherTooShort(){
+        CheckPasswordWhetherTooShort() {
             let passwordLength = this.password.length;
-            this.ErrorFlagPasswordTooShort = passwordLength>0 && passwordLength<6;
+            this.ErrorFlagPasswordTooShort = passwordLength > 0 && passwordLength < 6;
         },
-        CheckPasswordWhetherTooLong(){
+        CheckPasswordWhetherTooLong() {
             this.ErrorFlagPasswordTooLong = this.password.length > 10;
         },
-        CheckPasswordFormat(){
+        CheckPasswordFormat() {
             this.ErrorFlagPasswordFormatWrong = !this.regExpPassword.test(this.password);
         },
-        CheckPasswordNull(){
+        CheckPasswordNull() {
             this.ErrorFlagPasswordNull = this.password == '';
         },
-        CheckUsertypeWhetherSelected(){
+        CheckUsertypeWhetherSelected() {
             this.ErrorFlagUsertypeNotSelect = this.usertype == '';
         }
 
     },
     watch: {
-        username(){
+        username() {
             this.CheckUsernameWhetherTooLong();
             this.CheckUsernameFormat();
             this.CheckUsernameNull();
         },
-        password(){
+        password() {
             this.CheckPasswordWhetherTooShort();
             this.CheckPasswordWhetherTooLong();
             this.CheckPasswordFormat();
@@ -180,7 +173,7 @@ export default {
 }
 </script>
 <style>
-    .errorMessage{
-        color: red;
-    }
+.errorMessage {
+    color: red;
+}
 </style>
