@@ -1,18 +1,30 @@
 <template>
     <div>
+        <div>
+
         <label>用户名</label><input type="text" v-model="username"/>
         <div v-if="ErrorFlagUsernameTooLong">过长</div>
         <div v-if="ErrorFlagUsernameFormatWrong">格式错误</div>
         <div v-if="ErrorFlagUsernameNull">为空</div>
+        </div>
+        <div>
+
         <label>密码</label><input type="password" v-model="password"/>
         <div v-if="ErrorFlagPasswordTooShort">太短</div>
         <div v-if="ErrorFlagPasswordTooLong">过长</div>
         <div v-if="ErrorFlagPasswordFormatWrong">格式错误</div>
         <div v-if="ErrorFlagPasswordNull">为空</div>
+        </div>
+        <div>
+
         <input type="radio" name="usertype" value="manager" v-model="usertype" />管理员
-        <div v-if="ErrorFlagUsertypeNotSelect">没有选择</div>
         <input type="radio" name="usertype" value="normaluser" v-model="usertype" />普通用户
+        <div v-if="ErrorFlagUsertypeNotSelect">没有选择</div>
+        </div>
+        <div>
+
         <input type="button" value="提交" @click="login" />
+        </div>
     </div>
 </template>
 <script>
